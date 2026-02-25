@@ -1,0 +1,17 @@
+/venv
+/dev
+/errors
+/.vscode
+/mypycache__
+/src/roaming_ingestion_pipelines.egg-info
+/htmlcov
+/logs
+.mypy_cache
+.env
+*.csv
+*.parquet
+*.pyc
+.pytest_cache
+__pycache__
+.ruff_cache
+.coverage

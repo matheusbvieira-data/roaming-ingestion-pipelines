@@ -1,0 +1,74 @@
+# --- Sistema de Build (O padrão oficial) ---
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# --- Metadados do Projeto (PEP 621) ---
+[project]
+name = "roaming-ingestion-pipelines"
+version = "0.1.0"
+description = "Pipelines de ingestão de Dados de Roaming"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+  { name = "Matheus Vieira", email = "matheusvieira0101@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.13",
+]
+
+# --- Dependências Principais ---
+dependencies = [
+    "apache-airflow>=3.0.0",      # Orquestrador
+    "pandas>=2.0.0",              # Manipulação de dados clássica
+    "polars>=1.37.0",             # Manipulação de dados ultra-rápida (Rust)
+    "pydantic>=2.12.0",            # Validação de dados robusta
+    "pydantic-settings>=2.12.0",   # Gerenciamento de variáveis de ambiente
+    "sqlalchemy>=2.0.0",          # Conexão com banco de dados
+    "psycopg2-binary>=2.9.0",     # Driver PostgreSQL
+    "boto3>=1.34.0",              # SDK da AWS (S3, Glue, etc.)
+]
+
+# --- Dependências Opcionais ---
+# Instale com: pip install -e .[dev]
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",              # Framework de testes
+    "pytest-cov>=4.1.0",          # Relatório de cobertura de testes
+    "ruff>=0.3.0",                # Linter e Formatter
+    "dbt-postgres>=1.7.0",        # Ferramenta de transformação (Adapter Postgres)
+    "ipykernel>=6.0.0",            # Para rodar Jupyter Notebooks
+]
+
+# --- Configuração do RUFF (Linter & Formatter) ---
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+# E = Erros pycodestyle, F = Pyflakes, I = Isort (ordenação de imports), W = Warnings
+select = ["E", "F", "I", "W", "D"]
+ignore = [
+    "D100", # Missing docstring in public module (as vezes opcional)
+    "D104", # Missing docstring in public package (__init__.py vazio)
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# --- Configuração do PYTEST ---
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=src"
+testpaths = [
+    "tests",
+]
+pythonpath = [
+    ".", "src"
+]
