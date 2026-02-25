@@ -1,0 +1,6 @@
+pacman -Syu
+pacman -Su
+
+pacman -S make
+
+make --version
