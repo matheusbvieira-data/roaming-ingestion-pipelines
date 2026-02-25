@@ -3,7 +3,7 @@
 /errors
 /.vscode
 /mypycache__
-/src/automated_reporting_pipeline.egg-info
+/src/roaming_ingestion_pipelines.egg-info
 /htmlcov
 /logs
 .mypy_cache
