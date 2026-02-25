@@ -37,7 +37,7 @@ class TestTeradataConnection:
         [(HOST, True), (HOST[:-4], False)],
     )
     @pytest.mark.skipif(
-        sys.platform.startswith("ubu"),
+        sys.platform.startswith("linux"),
         reason="This will not run on actions. It needs to be connected to TBRA VPN",
     )
     def test_connection(
@@ -107,7 +107,7 @@ class TestTeradataConnection:
 
 
 @pytest.mark.skipif(
-    sys.platform.startswith("ubu"),
+    sys.platform.startswith("linux"),
     reason="This will not run on actions. It needs to be connected to TBRA VPN",
 )
 def test_main_no_args(capsys):  # type: ignore
