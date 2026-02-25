@@ -14,7 +14,7 @@ I engineered several automated pipelines using Python to handle the extraction, 
 * **Key Impacts:** 
     - **No more** manual downloads from DCH repository to get crucial data for analysis needed.
     - Dashboards can now be updated **automatically** with the latest info.
-    - Higher quality data cause by automated data cleaning pipelines.
+    - Higher quality data caused by automated data cleaning pipelines.
 * **Reliability:** Eliminated manual copy-paste errors.
 * **Scalability:** The script handles annual data volumes exceeding 100GB of information.
 
