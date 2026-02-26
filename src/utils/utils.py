@@ -6,6 +6,7 @@ import pathlib
 import re
 from datetime import datetime
 from typing import List
+from zipfile import ZipFile
 
 import duckdb
 import pandas
@@ -119,3 +120,74 @@ def move_file(file: str, folder: pathlib.Path, logger: logging.Logger) -> bool:
     except Exception as e:
         logger.error("The following error occurred: %s", e)
         return False
+
+
+def find_files(
+    folder_path: pathlib.Path,
+    file_prefix: str,
+    date_sensitive: bool = False,
+    return_first: bool = False,
+    reverse: bool = True,
+) -> List[pathlib.Path]:
+    """Find files with a given prefix in a folder."""
+    paths = sorted(folder_path.iterdir(), key=os.path.getmtime, reverse=reverse)
+    useful_paths: List[pathlib.Path] = []
+    date: str = ""
+
+    if date_sensitive:
+        date = "-".join(
+            [
+                str(datetime.today().year).zfill(4),
+                str(datetime.today().month).zfill(2),
+                str(datetime.today().day).zfill(2),
+            ]
+        )
+
+    for path in paths:
+        if date_sensitive and date in str(path) and file_prefix in str(path):
+            useful_paths.append(path)
+            if return_first:
+                break
+        if not date_sensitive and file_prefix in str(path):
+            useful_paths.append(path)
+    return useful_paths
+
+
+def unzip_files(
+    file_paths: List[pathlib.Path], file_pwd: str | None = None
+) -> List[pathlib.Path] | None:
+    """Function that unzip given files.
+
+    Returns:
+        List[pathlib.Path] | None: List of extracted files
+    """
+    if type(file_paths) is not list:
+        return None
+    pwd: bytes | None = None if file_pwd is None else file_pwd.encode()
+    for i in file_paths:
+        if ".zip" in str(i):
+            with ZipFile(i) as file:
+                try:
+                    file.extractall(
+                        path=str(file_paths[0])[: str(file_paths[0]).rfind("\\")],
+                        pwd=pwd,
+                    )
+                except RuntimeError:
+                    print("Incorrect password!!")
+                    return None
+
+    return find_files(
+        pathlib.Path(str(file_paths[0])[: str(file_paths[0]).rfind("\\")]),
+        ".csv",
+        reverse=False,
+    )
+
+
+def delete_files(file_paths: List[pathlib.Path]) -> None:
+    """Function to delete given file paths."""
+    try:
+        for path in file_paths:
+            os.remove(path)
+            return
+    except TypeError:
+        return
