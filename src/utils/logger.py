@@ -3,6 +3,7 @@
 import logging
 import pathlib
 from datetime import datetime
+from functools import wraps
 
 
 class ColorFormatter(logging.Formatter):
@@ -79,3 +80,36 @@ class Logger:
 
         """
         return self.__logger
+
+    def log_function_call(self, func):
+        """_summary_.
+
+        Args:
+            func (_type_): _description_
+
+        Raises:
+            e: _description_
+
+        Returns:
+            _type_: _description_
+        """
+
+        @wraps(func)  # Helps with debugging and introspection
+        def wrapper(*args, **kwargs):
+            # Log function start with arguments
+            self.get_logger().info(
+                f"Starting function: {func.__name__!r} with args: {args}, kwargs: {kwargs}"
+            )
+            try:
+                result = func(*args, **kwargs)  # Call the original function
+                # Log function end with the result
+                self.get_logger().info(
+                    f"Finished function: {func.__name__!r} with result: {result!r}"
+                )
+                return result
+            except Exception as e:
+                # Log any exceptions that occur
+                self.get_logger().error(f"Error in function {func.__name__!r}: {e}")
+                raise e
+
+        return wrapper
