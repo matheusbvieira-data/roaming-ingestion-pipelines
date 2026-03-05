@@ -6,6 +6,7 @@
 /src/roaming_ingestion_pipelines.egg-info
 /htmlcov
 /logs
+/typings
 .mypy_cache
 .env
 *.csv
