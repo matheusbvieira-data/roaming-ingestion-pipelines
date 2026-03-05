@@ -1,3 +1,8 @@
+import os
+
 import dotenv
 
-dotenv.load_dotenv()  # Load environment variables from .env file
+
+def main():
+    """Main config function to initialize config."""
+    dotenv.load_dotenv()
