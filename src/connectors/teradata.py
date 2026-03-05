@@ -142,6 +142,13 @@ class TeradataConnection:
         self.logger.info("Not a dataframe: %s", type(dataframe))
         return None
 
+    def exec_sql(self, query: str) -> bool:
+        try:
+            teradataml.execute_sql(query)  # type: ignore
+            return True
+        except Exception:
+            return False
+
 
 def main(args=None):  # type: ignore
     """Main entrypoint."""
